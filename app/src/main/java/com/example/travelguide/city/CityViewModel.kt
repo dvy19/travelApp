@@ -4,17 +4,27 @@ import android.util.Log
 import androidx.compose.runtime.*
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.travelguide.place.GetSinglePlaceState
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.flow.asStateFlow
 
 sealed class GetAllCityState{
-
     object Idle: GetAllCityState()
     object Loading: GetAllCityState()
     data class Success(val cities: List<City>) : GetAllCityState()
     data class Error(val message: String) : GetAllCityState()
+}
+
+sealed class GetSingleCityState{
+
+    object Idle: GetSingleCityState()
+    object Loading: GetSingleCityState()
+    data class Success(val city  : City): GetSingleCityState()
+    data class Error(val message:String) : GetSingleCityState()
+
+
 
 }
 
@@ -28,6 +38,13 @@ class CityViewModel(
 
     val getCityState: StateFlow<GetAllCityState> =
         _getCityState.asStateFlow()
+
+    private val _getSingleCityState = MutableStateFlow<GetSingleCityState>(
+        GetSingleCityState.Idle
+    )
+
+    val getSingleCityState: StateFlow<GetSingleCityState> =
+        _getSingleCityState.asStateFlow()
 
 
 
@@ -97,6 +114,40 @@ class CityViewModel(
                     )
             }
         }}
+
+    fun fetchSingleCity(
+        id:Int
+    ){
+
+        viewModelScope.launch{
+
+            _getSingleCityState.value= GetSingleCityState.Idle
+
+            try{
+
+                val response=repository.get_city_by_id(id)
+
+                if(response.body()!=null && response.isSuccessful){
+
+                    _getSingleCityState.value= GetSingleCityState.Success(
+                        response.body()!!.data
+                    )
+                }
+                else{
+
+                    _getSingleCityState.value= GetSingleCityState.Error(
+                        "failed"
+                    )
+                }
+            }
+
+            catch(e: Exception) {
+                _getSingleCityState.value= GetSingleCityState.Error(
+                    e.message?: "Unknown Error"
+                )
+            }
+        }
+    }
 
 
 

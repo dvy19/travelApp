@@ -174,7 +174,10 @@ fun HomeScreen(
 
                         FeaturedCitiesSection(
                             cities = cities,
-                            onCityClick = {},
+                            onCityClick = {
+                                mainNavController.navigate("cityDetail/${it.id}")
+
+                            },
                             modifier = Modifier.padding(horizontal = 24.dp)
                         )
                     }

@@ -22,4 +22,12 @@ class CityRepository(
         )
     }
 
+    suspend fun get_city_by_id(id:Int) :  Response<SingleCityResponse>{
+
+        val token=sessionManager.getAuthToken()
+
+        return apiService.getCityById("Bearer $token" ,id)
+
+    }
+
 }

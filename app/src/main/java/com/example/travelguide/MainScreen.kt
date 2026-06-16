@@ -12,7 +12,9 @@ import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
+import com.example.travelguide.Screens.CityDetailScreen
 import com.example.travelguide.Screens.HomeScreen
+import com.example.travelguide.city.CityDetailScreen
 import com.example.travelguide.place.PlaceDetailScreen
 import com.example.travelguide.user.screens.HomeScreen
 
@@ -80,6 +82,24 @@ fun MainScreen(rootNavController: NavController) {
         }
 
              */
+
+            composable(
+                route = Screens.CityDetailScreen.route,
+                arguments = listOf(
+                    navArgument("id") {
+                        type = NavType.IntType
+                    }
+                )
+            ) { backStackEntry ->
+
+                val id = backStackEntry.arguments?.getInt("id")
+
+                CityDetailScreen(
+                    mainNavController = mainNavController,
+                    cityId = id,
+                    modifier = Modifier
+                )
+            }
 
             composable(
                 route = Screens.PlaceDetailScreen.route,
