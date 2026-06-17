@@ -51,16 +51,45 @@ data class  SinglePlaceData(
     var website:String,
     var image_url:String,
     var created_at:String,
-    var reviews:List<Review>
+    var reviews:List<ReviewResponse>
 )
 
-data class Review(
-    var id:Int,
+data class ReviewRequest(
     var user:Int,
     var place:Int,
+    var rating:Int,
     var content: String,
-    var created_at: String
 )
+
+data class ReviewResponse(
+    var message:String,
+    var data:ReviewData
+)
+data class ReviewData(
+
+    var id:Int,
+    var place:Int,
+    var user:Int,
+    var user_mail:String,
+    var created_at: String,
+    var rating:Int,
+    var content:String
+)
+
+/*
+{
+    "message": "Review created successfully",
+    "data": {
+        "id": 1,
+        "place": 4,
+        "user": 11,
+        "user_email": "user0909@gmail.com",
+        "rating": 4,
+        "content": "good place",
+        "created_at": "2026-06-17T09:44:58.543706Z"
+    }
+}
+ */
 /*
 {
     "message": "Place retrieved successfully",

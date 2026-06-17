@@ -24,6 +24,14 @@ sealed class GetSinglePlaceState{
     data class Error(val message: String): GetSinglePlaceState()
 }
 
+sealed class CreateReviewState{
+
+    object Idle: CreateReviewState()
+    object Loading: CreateReviewState()
+    data class Success( val  review: ReviewData): CreateReviewState()
+    data class Error(var message: String): CreateReviewState()
+}
+
 
 class PlaceViewModel(
     private val repository: PlaceRepository
@@ -34,6 +42,12 @@ class PlaceViewModel(
 
     private val _getSinglePlaceState = MutableStateFlow<GetSinglePlaceState>(GetSinglePlaceState.Idle)
     val getSinglePlaceState: StateFlow<GetSinglePlaceState> = _getSinglePlaceState.asStateFlow()
+
+
+    private val _reviewState = MutableStateFlow<CreateReviewState>(CreateReviewState.Idle)
+    val reviewState: StateFlow<CreateReviewState> = _reviewState.asStateFlow()
+
+
 
     fun fetchAllPlaces() {
 
@@ -101,6 +115,42 @@ class PlaceViewModel(
             }
         }
 
+
+    }
+
+    fun createReview( request: ReviewRequest){
+
+
+        viewModelScope.launch{
+
+            _reviewState.value= CreateReviewState.Idle
+
+            try{
+
+                val response= repository.createReview(request)
+
+                if(response!=null && response.isSuccessful){
+
+                    _reviewState.value= CreateReviewState.Success(
+                        response.body()!!.data
+                    )
+                }
+                else{
+                    _reviewState.value= CreateReviewState.Error(
+                        "failed"
+                    )
+
+                }
+            }
+            catch(e: Exception) {
+                _reviewState.value= CreateReviewState.Error(
+                    e.message?: "Unknown Error"
+                )
+            }
+
+
+
+        }
 
     }
 

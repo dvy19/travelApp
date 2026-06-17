@@ -22,6 +22,7 @@ import androidx.compose.material.icons.filled.Public
 import androidx.compose.material.icons.filled.Schedule
 import androidx.compose.material3.AssistChip
 import androidx.compose.material3.AssistChipDefaults
+import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.HorizontalDivider
@@ -43,6 +44,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
+import androidx.navigation.compose.rememberNavController
 import coil.compose.AsyncImage
 import com.example.travelguide.SessionManager
 
@@ -149,10 +151,12 @@ fun PlaceDetailScreen(
                         // Material 3 Tag Chip for Category
                         AssistChip(
                             onClick = { /* Handle filtering/actions if needed */ },
-                            label = { Text(
-                                text = place.category_name,
-                                style = MaterialTheme.typography.labelMedium
-                            ) },
+                            label = {
+                                Text(
+                                    text = place.category_name,
+                                    style = MaterialTheme.typography.labelMedium
+                                )
+                            },
                             colors = AssistChipDefaults.assistChipColors(
                                 labelColor = MaterialTheme.colorScheme.primary
                             )
@@ -210,6 +214,24 @@ fun PlaceDetailScreen(
                                 )
                             }
                         }
+
+                        Spacer(modifier = Modifier.height(16.dp))
+
+                        Button(
+                            onClick = {
+
+                                mainNavController.navigate("addReview/${place.id}")
+
+                            },
+                            modifier = Modifier.fillMaxWidth(),
+                            shape = MaterialTheme.shapes.small
+                        ) {
+                            Text(
+                                text = "Add Review",
+                                style = MaterialTheme.typography.titleMedium,
+
+                                )
+                        }
                     }
 
                     // Logistical and Contact Details Grid Structure
@@ -255,6 +277,8 @@ fun PlaceDetailScreen(
                         )
                     }
                 }
+
+
             }
 
         }
@@ -303,26 +327,33 @@ fun InfoRow(
     }
 }
 
-/*
+
 @Preview(name = "Light Mode", showBackground = true)
 @Preview(name = "Dark Mode", uiMode = android.content.res.Configuration.UI_MODE_NIGHT_YES, showBackground = true)
 @Composable
 fun PlaceDetailScreenPreview() {
     // Structural mock data mapping all details required for the travel guide app
-    val mockPlace = PlaceDetails(
-        name = "Taj Mahal",
-        city = "Agra",
-        category = "Historical Monument",
-        description = "The Taj Mahal is an ivory-white marble mausoleum on the south bank of the Yamuna river. It was commissioned in 1632 by the Mughal emperor Shah Jahan to house the tomb of his favorite wife, Mumtaz Mahal.",
-        latitude = 27.1751,
-        longitude = 78.0421,
-        contactNumber = "+91 562 2226431",
-        website = "www.tajmahal.gov.in",
-        entryFee = "₹50 (Indian), ₹1100 (Foreigners)",
-        historicalSignificance = "Designated as a UNESCO World Heritage Site in 1983 for being 'the jewel of Muslim art in India and one of the universally admired masterpieces of the world's heritage'. It represents the pinnacle of Mughal architecture.",
-        openingTime = "06:00 AM",
-        closingTime = "06:30 PM (Closed on Fridays)",
-        imageResId = android.R.drawable.ic_menu_gallery // Built-in fallback system placeholder for the preview
+    val mockPlace = SinglePlaceData(
+        id = 1,
+        city = 1,
+        city_name = "City A",
+        category = 1,
+        category_name = "Category X",
+        name = "Place Name",
+        description = "Description of the place",
+        historical_significance = "Historical significance of the place",
+        address = "Address of the place",
+        latitude = 40.7128,
+        longitude = -74.0060,
+        opening_time = "09:00",
+        closing_time = "18:00",
+        entry_fee = "Free",
+        contact_number = "123-456-7890",
+        website = "https://example.com",
+        image_url = "https://example.com/image.jpg",
+        created_at = "2023-09-01T12:00:00Z",
+        reviews = emptyList()
+
     )
 
     // Using MaterialTheme theme wrapper to ensure the preview renders background surfaces correctly
@@ -330,9 +361,8 @@ fun PlaceDetailScreenPreview() {
         Surface(
             color = MaterialTheme.colorScheme.background
         ) {
-            PlaceDetailScreen(place = mockPlace)
+            PlaceDetailScreen( mainNavController = rememberNavController() , placeId = 2, modifier = Modifier)
         }
     }
 }
 
- */

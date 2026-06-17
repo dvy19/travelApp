@@ -15,6 +15,7 @@ import androidx.navigation.navArgument
 import com.example.travelguide.Screens.CityDetailScreen
 import com.example.travelguide.Screens.HomeScreen
 import com.example.travelguide.city.CityDetailScreen
+import com.example.travelguide.place.AddReviewScreen
 import com.example.travelguide.place.PlaceDetailScreen
 import com.example.travelguide.user.screens.HomeScreen
 
@@ -97,6 +98,24 @@ fun MainScreen(rootNavController: NavController) {
                 CityDetailScreen(
                     mainNavController = mainNavController,
                     cityId = id,
+                    modifier = Modifier
+                )
+            }
+
+            composable(
+                route = Screens.AddReviewScreen.route,
+                arguments = listOf(
+                    navArgument("id") {
+                        type = NavType.IntType
+                    }
+                )
+            ) { backStackEntry ->
+
+                val id = backStackEntry.arguments?.getInt("id")
+
+                AddReviewScreen(
+                    mainNavController = mainNavController,
+                    placeId = id,
                     modifier = Modifier
                 )
             }

@@ -11,6 +11,8 @@ class PlaceRepository(
 
     private val apiService= TravelApiClient.getAllPlaceApi
 
+    private val reviewApiService= TravelApiClient.createReviewApi
+
 
     suspend fun getAllPlaces(): Response<PlaceResponse> {
 
@@ -29,6 +31,16 @@ class PlaceRepository(
            "Bearer $token", id
         )
 
+    }
+
+    suspend fun createReview( request: ReviewRequest) : Response<ReviewResponse>{
+
+        val token=sessionManager.getAuthToken()
+
+        return reviewApiService.createReview(
+            "Bearer $token",
+            request
+        )
     }
 
 
