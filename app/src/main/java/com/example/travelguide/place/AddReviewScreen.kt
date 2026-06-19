@@ -210,43 +210,12 @@ fun AddReviewScreen(
                     Button(
                         onClick = {
                             val request=ReviewRequest(
-                                user=1,
                                 place=place.id,
                                 rating=rating,
                                 content=reviewText
                             )
 
                             viewModel.createReview(request)
-
-                            when(val state=reviewState){
-
-                                is CreateReviewState.Idle->{
-
-                                }
-
-                                is CreateReviewState.Loading->{
-
-                                }
-
-                                is CreateReviewState.Success->{
-
-                                    Log.d("m","success create review")
-                                    mainNavController.navigate("placeDetail/${place.id}")
-
-                                }
-
-                                is CreateReviewState.Error->{
-
-                                }
-
-                                else -> {}
-
-                            }
-
-
-
-
-
                         },
                         enabled = rating > 0 && reviewText.isNotBlank(),
                         modifier = Modifier
@@ -272,7 +241,30 @@ fun AddReviewScreen(
                     }
                 }
             }
+
+            LaunchedEffect(reviewState) {
+
+                when(reviewState) {
+
+                    is CreateReviewState.Success -> {
+
+                        Log.d("m", "success create review")
+
+                        mainNavController.navigate(
+                            "placeDetail/${place.id}"
+                        )
+                    }
+
+                    is CreateReviewState.Error -> {
+
+                        Log.d("m", "review creation failed")
+                    }
+
+                    else -> {}
+                }
+            }
         }
+
 
         is GetSinglePlaceState.Error->{
             Text(text = "Failed")

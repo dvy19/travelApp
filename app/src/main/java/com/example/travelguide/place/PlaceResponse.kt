@@ -55,7 +55,6 @@ data class  SinglePlaceData(
 )
 
 data class ReviewRequest(
-    var user:Int,
     var place:Int,
     var rating:Int,
     var content: String,
@@ -70,12 +69,16 @@ data class ReviewData(
     var id:Int,
     var place:Int,
     var user:Int,
-    var user_mail:String,
+    var user_email:String,
     var created_at: String,
     var rating:Int,
     var content:String
 )
 
+data class AllReviewsResponse(
+    var message:String,
+    var data:List<ReviewData>
+)
 /*
 {
     "message": "Review created successfully",

@@ -44,5 +44,15 @@ class PlaceRepository(
     }
 
 
+    suspend fun getAllReviews() : Response<AllReviewsResponse>{
+
+        val token=sessionManager.getAuthToken()
+
+        return reviewApiService.getAllReviews(
+            "Bearer $token"
+        )
+    }
+
+
 }
 

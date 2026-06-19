@@ -35,5 +35,9 @@ object TravelApiClient {
         retrofit.create(PlaceApiInterface::class.java)
     }
 
+    val getAllReviewApi: PlaceApiInterface by lazy{
+        retrofit.create(PlaceApiInterface::class.java)
+    }
+
 
 }
