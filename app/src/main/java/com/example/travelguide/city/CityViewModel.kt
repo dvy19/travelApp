@@ -59,14 +59,14 @@ class CityViewModel(
         _getPlaceByCityState.asStateFlow()
 
 
-    fun fetchPlaceByCity(id:Int){
+    fun fetchPlaceByCity(id:Int , search:String =""){
 
         viewModelScope.launch{
 
-            _getPlaceByCityState.value= GetPlaceByCityState.Idle
+            _getPlaceByCityState.value= GetPlaceByCityState.Loading
 
             try{
-                val response=repository.get_places_by_city(id)
+                val response=repository.get_places_by_city(id , search)
 
 
                 if(response.body()!=null && response.isSuccessful){
@@ -74,28 +74,19 @@ class CityViewModel(
                     _getPlaceByCityState.value= GetPlaceByCityState.Success(
                         response.body()!!.data
                     )
-
-
                 }
                 else{
-
                     _getPlaceByCityState.value= GetPlaceByCityState.Error(
                         "failed"
                     )
                 }
             }
-
             catch(e: Exception) {
                 _getPlaceByCityState.value= GetPlaceByCityState.Error(
                     e.message?: "Unknown Error"
                 )
             }
-
-
         }
-
-
-
     }
 
     fun fetchAllCity(){

@@ -1,9 +1,14 @@
 package com.example.travelguide.city
 
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.material3.Button
+import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.*
 import androidx.compose.runtime.LaunchedEffect
@@ -24,6 +29,10 @@ fun GetPlaceByCityScreen(
 
 
     val context=LocalContext.current
+
+    var searchText by remember {
+        mutableStateOf("")
+    }
 
     val sessionManager= SessionManager(context)
     val repo=CityRepository(sessionManager)
@@ -55,9 +64,39 @@ fun GetPlaceByCityScreen(
 
             LazyColumn (
 
-                modifier = Modifier.fillMaxSize(),
+                modifier = Modifier.fillMaxSize()
+                    .padding(24.dp),
                 verticalArrangement = Arrangement.spacedBy(16.dp)
             ){
+
+                item {
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        horizontalArrangement = Arrangement.spacedBy(8.dp)
+                    ) {
+
+                        OutlinedTextField(
+                            value = searchText,
+                            onValueChange = {
+                                searchText = it
+                            },
+                            modifier = Modifier.weight(1f),
+                            placeholder = {
+                                Text("Search places")
+                            },
+                            singleLine = true
+                        )
+
+                        Button(
+                            onClick = {
+                                viewModel.fetchPlaceByCity(cityId!!, searchText)
+                            }
+                        ) {
+                            Text("Search")
+                        }
+                    }
+                }
+
 
                 items(
                     items = places,
@@ -67,11 +106,11 @@ fun GetPlaceByCityScreen(
                     PlaceCardItem(
                         place = place,
                         onClick = {
-                            mainNavController.navigate("placeDetail/${place.id}")
-
+                            mainNavController.navigate(
+                                "placeDetail/${place.id}"
+                            )
                         }
                     )
-
                 }
             }
         }

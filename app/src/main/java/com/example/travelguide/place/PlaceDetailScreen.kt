@@ -381,49 +381,13 @@ fun InfoRow(
                 style = MaterialTheme.typography.bodyLarge,
                 color = if (isLink) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSurface,
                 fontWeight = if (isLink) FontWeight.Medium else FontWeight.Normal
+
             )
         }
     }
 }
 
 
-@Preview(name = "Light Mode", showBackground = true)
-@Preview(name = "Dark Mode", uiMode = android.content.res.Configuration.UI_MODE_NIGHT_YES, showBackground = true)
-@Composable
-fun PlaceDetailScreenPreview() {
-    // Structural mock data mapping all details required for the travel guide app
-    val mockPlace = SinglePlaceData(
-        id = 1,
-        city = 1,
-        city_name = "City A",
-        category = 1,
-        category_name = "Category X",
-        name = "Place Name",
-        description = "Description of the place",
-        historical_significance = "Historical significance of the place",
-        address = "Address of the place",
-        latitude = 40.7128,
-        longitude = -74.0060,
-        opening_time = "09:00",
-        closing_time = "18:00",
-        entry_fee = "Free",
-        contact_number = "123-456-7890",
-        website = "https://example.com",
-        image_url = "https://example.com/image.jpg",
-        created_at = "2023-09-01T12:00:00Z",
-        reviews = emptyList()
-
-    )
-
-    // Using MaterialTheme theme wrapper to ensure the preview renders background surfaces correctly
-    MaterialTheme {
-        Surface(
-            color = MaterialTheme.colorScheme.background
-        ) {
-            PlaceDetailScreen( mainNavController = rememberNavController() , placeId = 2, modifier = Modifier)
-        }
-    }
-}
 
 @Composable
 fun ReviewCard(

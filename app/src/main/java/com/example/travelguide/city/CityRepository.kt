@@ -25,12 +25,12 @@ class CityRepository(
         )
     }
 
-    suspend fun get_places_by_city(id:Int) : Response<PlaceResponse>{
+    suspend fun get_places_by_city(id:Int , search:String ="") : Response<PlaceResponse>{
 
         val token=sessionManager.getAuthToken()
 
         return placeByCityApiService.getPlacesByCity(
-            "Bearer $token", id
+            "Bearer $token", id , search
         )
     }
 

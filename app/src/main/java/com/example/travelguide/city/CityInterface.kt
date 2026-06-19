@@ -5,6 +5,7 @@ import retrofit2.Response
 import retrofit2.http.GET
 import retrofit2.http.Header
 import retrofit2.http.Path
+import retrofit2.http.Query
 
 
 interface CityInterface {
@@ -21,10 +22,13 @@ interface CityInterface {
     ): Response<SingleCityResponse>
 
 
-    @GET("api/places/city/{id}/")
+    @GET("api/place/places/city/{cityId}/")
     suspend fun getPlacesByCity(
         @Header("Authorization") token: String,
-        @Path("id") id: Int
+        @Path("cityId") cityId: Int,
+        @Query("search") search: String = ""
     ): Response<PlaceResponse>
+
+
 
 }
