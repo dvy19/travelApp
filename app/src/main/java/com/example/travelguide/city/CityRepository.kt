@@ -2,6 +2,7 @@ package com.example.travelguide.city
 
 import com.example.travelguide.SessionManager
 import com.example.travelguide.TravelApiClient
+import com.example.travelguide.place.PlaceResponse
 import retrofit2.Response
 
 
@@ -11,6 +12,8 @@ class CityRepository(
 
     private val apiService = TravelApiClient.getCityApi
 
+    private val placeByCityApiService=TravelApiClient.getPlaceByCityApi
+
     suspend fun get_all_posts(): Response<CityResponse> {
 
         val token = sessionManager.getAuthToken()
@@ -19,6 +22,15 @@ class CityRepository(
         return apiService.getAllCity(
             token = "Bearer $token"
 
+        )
+    }
+
+    suspend fun get_places_by_city(id:Int) : Response<PlaceResponse>{
+
+        val token=sessionManager.getAuthToken()
+
+        return placeByCityApiService.getPlacesByCity(
+            "Bearer $token", id
         )
     }
 

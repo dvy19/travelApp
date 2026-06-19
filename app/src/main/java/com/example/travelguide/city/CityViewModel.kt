@@ -5,6 +5,7 @@ import androidx.compose.runtime.*
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.travelguide.place.GetSinglePlaceState
+import com.example.travelguide.place.Place
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
@@ -23,9 +24,13 @@ sealed class GetSingleCityState{
     object Loading: GetSingleCityState()
     data class Success(val city  : City): GetSingleCityState()
     data class Error(val message:String) : GetSingleCityState()
+}
 
-
-
+sealed class GetPlaceByCityState{
+    object Idle: GetPlaceByCityState()
+    object Loading: GetPlaceByCityState()
+    data class Success(val places: List<Place>) : GetPlaceByCityState()
+    data class Error(val message: String) : GetPlaceByCityState()
 }
 
 class CityViewModel(
@@ -46,7 +51,52 @@ class CityViewModel(
     val getSingleCityState: StateFlow<GetSingleCityState> =
         _getSingleCityState.asStateFlow()
 
+    private val _getPlaceByCityState = MutableStateFlow<GetPlaceByCityState>(
+        GetPlaceByCityState.Idle
+    )
 
+    val getPlaceByCityState: StateFlow<GetPlaceByCityState> =
+        _getPlaceByCityState.asStateFlow()
+
+
+    fun fetchPlaceByCity(id:Int){
+
+        viewModelScope.launch{
+
+            _getPlaceByCityState.value= GetPlaceByCityState.Idle
+
+            try{
+                val response=repository.get_places_by_city(id)
+
+
+                if(response.body()!=null && response.isSuccessful){
+
+                    _getPlaceByCityState.value= GetPlaceByCityState.Success(
+                        response.body()!!.data
+                    )
+
+
+                }
+                else{
+
+                    _getPlaceByCityState.value= GetPlaceByCityState.Error(
+                        "failed"
+                    )
+                }
+            }
+
+            catch(e: Exception) {
+                _getPlaceByCityState.value= GetPlaceByCityState.Error(
+                    e.message?: "Unknown Error"
+                )
+            }
+
+
+        }
+
+
+
+    }
 
     fun fetchAllCity(){
 

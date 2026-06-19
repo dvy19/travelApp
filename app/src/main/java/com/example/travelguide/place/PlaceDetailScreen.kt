@@ -448,7 +448,7 @@ fun ReviewCard(
         ) {
 
             Text(
-                text = review.user_mail?:"NA",
+                text = review.user_email,
                 style = MaterialTheme.typography.titleSmall,
                 fontWeight = FontWeight.Bold
             )

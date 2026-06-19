@@ -39,5 +39,10 @@ object TravelApiClient {
         retrofit.create(PlaceApiInterface::class.java)
     }
 
+    val getPlaceByCityApi: CityInterface by lazy{
+        retrofit.create(CityInterface::class.java)
+    }
+
+
 
 }

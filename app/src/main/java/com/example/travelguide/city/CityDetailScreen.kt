@@ -249,7 +249,10 @@ fun CityDetailScreen(
                                     title = "Places",
                                     subtitle = "Must-visit spots",
                                     modifier = Modifier.weight(1f),
-                                    onClick = {  }
+                                    onClick = {
+                                        mainNavController.navigate("placeByCity/${city.id}")
+
+                                    }
                                 )
                                 CategoryDiscoveryCard(
                                     title = "Food",

@@ -39,9 +39,9 @@ sealed class Screens( var route:String){
 
     data object PlaceDetailScreen:Screens("placeDetail/{id}")
 
-    data object CityDetailScreen:Screens("cityDetail")
-
-
+    data object CityDetailScreen:Screens("cityDetail/{id}")
     data object AddReviewScreen:Screens("addReview/{id}")
+
+    data object GetPlaceByCityScreen:Screens("placeByCity/{id}")
 
 }
