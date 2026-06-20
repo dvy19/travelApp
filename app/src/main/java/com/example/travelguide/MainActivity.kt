@@ -44,4 +44,8 @@ sealed class Screens( var route:String){
 
     data object GetPlaceByCityScreen:Screens("placeByCity/{id}")
 
+    data object FamousPlaceScreen:Screens("famousPlaces")
+
+    data object ExploreScreen:Screens("explore")
+
 }

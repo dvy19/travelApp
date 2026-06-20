@@ -5,6 +5,7 @@ import androidx.compose.material.icons.filled.Home
 
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.Explore
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.Message
 import androidx.compose.material.icons.filled.Person
@@ -41,11 +42,11 @@ fun BottomNavBar(mainNavController: NavHostController) {
             )
         }
 
-        /*
+
 
         IconButton(
             onClick = {
-                mainNavController.navigate(Screens.SearchScreen.route) {
+                mainNavController.navigate(Screens.ExploreScreen.route) {
                     popUpTo(mainNavController.graph.startDestinationId)
                     launchSingleTop = true
                 }
@@ -53,12 +54,14 @@ fun BottomNavBar(mainNavController: NavHostController) {
             modifier = Modifier.weight(1f)
         ) {
             Icon(
-                Icons.Default.Search,
+                Icons.Default.Explore,
                 contentDescription = null,
-                tint = if (currentRoute == Screens.SearchScreen.route)
+                tint = if (currentRoute == Screens.ExploreScreen.route)
                     Color(0xFF6C2BEE) else Color.Gray
             )
         }
+
+
         /*
 
 
@@ -78,6 +81,7 @@ fun BottomNavBar(mainNavController: NavHostController) {
 
 
         */
+        /*
 
         IconButton(
             onClick = {
@@ -96,6 +100,7 @@ fun BottomNavBar(mainNavController: NavHostController) {
             )
         }
     }
+
 
          */
 

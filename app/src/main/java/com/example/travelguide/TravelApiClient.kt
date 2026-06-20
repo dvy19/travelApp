@@ -18,6 +18,18 @@ object TravelApiClient {
             .build()
     }
 
+    private const  val FLASK_BASE_URL="https://travel-app-flask.onrender.com"
+
+    private val flaskRetrofit: Retrofit by lazy {
+        Retrofit.Builder()
+            .baseUrl(FLASK_BASE_URL)
+            .addConverterFactory(GsonConverterFactory.create())
+            .build()
+    }
+     val famousPlaceApi:PlaceApiInterface by lazy{
+         flaskRetrofit.create(PlaceApiInterface::class.java)
+     }
+
     val registerApi: AuthInterface by lazy {
         retrofit.create(AuthInterface::class.java)
 

@@ -18,6 +18,8 @@ import com.example.travelguide.city.CityDetailScreen
 import com.example.travelguide.city.GetPlaceByCityScreen
 import com.example.travelguide.place.AddReviewScreen
 import com.example.travelguide.place.PlaceDetailScreen
+import com.example.travelguide.user.screens.ExploreScreen
+import com.example.travelguide.user.screens.FamousPlacesScreen
 import com.example.travelguide.user.screens.HomeScreen
 
 
@@ -84,6 +86,16 @@ fun MainScreen(rootNavController: NavController) {
         }
 
              */
+
+            composable(Screens.ExploreScreen.route){
+                ExploreScreen(mainNavController)
+            }
+
+            composable(Screens.FamousPlaceScreen.route){
+                FamousPlacesScreen(mainNavController)
+            }
+
+
 
             composable(
                 route = Screens.CityDetailScreen.route,

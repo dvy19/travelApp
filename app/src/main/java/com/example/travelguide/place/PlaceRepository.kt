@@ -14,6 +14,15 @@ class PlaceRepository(
     private val reviewApiService= TravelApiClient.createReviewApi
 
 
+    private val famousPlaceApiService= TravelApiClient.famousPlaceApi
+
+    suspend fun getFamousPlaces() : Response<List<FamousPlace>>{
+
+        return famousPlaceApiService.getFamousPlaces()
+
+    }
+
+
     suspend fun getAllPlaces(): Response<PlaceResponse> {
 
         val token= sessionManager.getAuthToken()

@@ -41,10 +41,20 @@ sealed class GetAllReviewState{
 
 }
 
+sealed class  GetFamousPlaceState{
+    object Idle: GetFamousPlaceState()
+    object Loading: GetFamousPlaceState()
+    data class Success(val places: List<FamousPlace>): GetFamousPlaceState()
+    data class Error(val message: String): GetFamousPlaceState()
+}
+
 
 class PlaceViewModel(
     private val repository: PlaceRepository
 ): ViewModel(){
+
+    private val _getFamousPlaceState = MutableStateFlow<GetFamousPlaceState>(GetFamousPlaceState.Idle)
+    val getFamousPlaceState: StateFlow<GetFamousPlaceState> = _getFamousPlaceState.asStateFlow()
 
     private val _getPlaceState = MutableStateFlow<GetAllPlaceState>(GetAllPlaceState.Idle)
     val getPlaceState: StateFlow<GetAllPlaceState> = _getPlaceState.asStateFlow()
@@ -60,8 +70,29 @@ class PlaceViewModel(
     val getAllReviewState: StateFlow<GetAllReviewState> = _getAllReviewState.asStateFlow()
 
 
+    fun fetchFamousPlaces() {
+        viewModelScope.launch {
+            _getFamousPlaceState.value = GetFamousPlaceState.Loading
+
+            try {
+                val response = repository.getFamousPlaces()
+                if (response.body() != null && response.isSuccessful) {
+                    _getFamousPlaceState.value = GetFamousPlaceState.Success(response.body()!!)
 
 
+                } else {
+                    _getFamousPlaceState.value = GetFamousPlaceState.Error(
+                        response.message() ?: "Failed"
+                    )
+                }
+            } catch (e: Exception) {
+                _getFamousPlaceState.value = GetFamousPlaceState.Error(
+                    e.message ?: "Unknown Error"
+                )
+            }
+        }
+
+    }
 
     fun fetchAllPlaces() {
 

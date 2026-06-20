@@ -118,3 +118,40 @@ data class AllReviewsResponse(
     }
 }
  */
+
+data class FamousPlace(
+    val annual_visitors_millions: Int,
+    val average_visit_duration_hours: Double,
+    val best_visit_month: String,
+    val city: String,
+    val country: String,
+    val entry_fee_usd: Int,
+    val famous_for: String,
+    val id: Int,
+    val name: String,
+    val region: String,
+    val tourism_revenue_million_usd: Int,
+    val type: String,
+    val unesco_world_heritage: String,
+    val year_built: String
+)
+
+
+
+
+/*
+ "annual_visitors_millions": 7.0,
+    "average_visit_duration_hours": 2.5,
+    "best_visit_month": "May-June/Sept-Oct",
+    "city": "Paris",
+    "country": "France",
+    "entry_fee_usd": 35,
+    "famous_for": "Iconic iron lattice tower, symbol of Paris",
+    "id": 1,
+    "name": "Eiffel Tower",
+    "region": "Western Europe",
+    "tourism_revenue_million_usd": 95,
+    "type": "Monument/Tower",
+    "unesco_world_heritage": "No",
+    "year_built": "1889"
+ */

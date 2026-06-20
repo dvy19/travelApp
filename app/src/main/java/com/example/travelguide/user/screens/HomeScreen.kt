@@ -139,9 +139,11 @@ fun HomeScreen(
 
 
 
-
     LazyColumn(
-        modifier = Modifier.fillMaxSize(),
+        modifier = Modifier.fillMaxSize()
+            .padding(
+                24.dp
+            ),
         verticalArrangement = Arrangement.spacedBy(16.dp)
     ) {
 
@@ -266,6 +268,8 @@ fun HomeScreen(
         }
     }
         }
+
+
 
 data class PlaceCategory(
     val id: Int,
