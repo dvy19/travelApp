@@ -1,3 +1,4 @@
+package com.example.travelguide.auth
 
 import android.app.Application
 import android.util.Log
@@ -7,11 +8,21 @@ import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.travelguide.SessionManager
 import com.example.travelguide.auth.AuthRepository
+import com.example.travelguide.auth.DeviceTokenRequest
 import com.example.travelguide.auth.LoginRequest
 import com.example.travelguide.auth.SignupRequest
+import com.example.travelguide.city.GetAllCityState
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 
-
+sealed class DeviceTokenState{
+    object Idle:DeviceTokenState()
+    object Loading:DeviceTokenState()
+    data class Success(val message:String):DeviceTokenState()
+    data class Error(val message:String):DeviceTokenState()
+}
 
 class AuthViewModel(application: Application) : AndroidViewModel(application){
 
@@ -21,9 +32,46 @@ class AuthViewModel(application: Application) : AndroidViewModel(application){
 
     var message=mutableStateOf<String>("")
 
+    private val _deviceTokenState = MutableStateFlow<DeviceTokenState>(
+        DeviceTokenState.Idle
+    )
+
+    val deviceTokenState: StateFlow<DeviceTokenState> =
+        _deviceTokenState.asStateFlow()
+
+
+
     private val sessionManager = SessionManager(application)
 
     var loginState = mutableStateOf(false)
+
+    suspend fun sendDeviceToken( request: DeviceTokenRequest){
+
+        viewModelScope.launch {
+
+            _deviceTokenState.value=DeviceTokenState.Loading
+
+            try{
+
+                val response=repository.post_device_token(request)
+
+                if(response.isSuccessful){
+                    _deviceTokenState.value=DeviceTokenState.Success(
+                        "success"
+                    )
+                }
+            }
+            catch(e:Exception){
+                _deviceTokenState.value=DeviceTokenState.Error(
+                    e.message?: "Unknown Error"
+                )
+            }
+
+
+
+
+        }
+    }
 
     fun login(email: String, password: String) {
         viewModelScope.launch {

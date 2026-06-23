@@ -1,6 +1,7 @@
 package com.example.travelguide.place
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -66,19 +67,15 @@ fun PlaceDetailScreen(
     modifier:Modifier,
     placeId: Int?
 ) {
+
+
     val scrollState = rememberScrollState()
-
-
     val context=LocalContext.current
-
     val sessionManager= SessionManager(context)
-
     val repo=PlaceRepository(sessionManager)
-
     val viewModel: PlaceViewModel=viewModel(
         factory = PlaceViewModelFactory(repo)
     )
-
 
     LaunchedEffect(Unit){
 
@@ -91,19 +88,16 @@ fun PlaceDetailScreen(
 
         viewModel.get_all_reviews()
     }
-    val getSinglePlaceState by viewModel.getSinglePlaceState.collectAsState()
 
+    val getSinglePlaceState by viewModel.getSinglePlaceState.collectAsState()
     val getAllReviews by viewModel.getAllReviewState.collectAsState()
+
 
     when(val state=getSinglePlaceState){
 
-        is GetSinglePlaceState.Idle->{
+        is GetSinglePlaceState.Idle->{}
 
-        }
-
-        is  GetSinglePlaceState.Loading->{
-
-        }
+        is  GetSinglePlaceState.Loading->{}
 
         is GetSinglePlaceState.Success->{
 
@@ -112,6 +106,7 @@ fun PlaceDetailScreen(
             Column(
                 modifier = modifier
                     .fillMaxSize()
+                    .background(Color.White)
                     .verticalScroll(scrollState)
             ) {
                 // 1. Hero Image Header (Full width, structured height)
@@ -127,6 +122,7 @@ fun PlaceDetailScreen(
                 Column(
                     modifier = Modifier
                         .fillMaxWidth()
+                        .background(Color.White)
                         .padding(20.dp),
                     verticalArrangement = Arrangement.spacedBy(16.dp)
                 ) {
@@ -141,7 +137,7 @@ fun PlaceDetailScreen(
                                 text = place.name,
                                 style = MaterialTheme.typography.headlineMedium,
                                 fontWeight = FontWeight.Bold,
-                                color = MaterialTheme.colorScheme.onSurface,
+                                color = Color.Black,
                                 modifier = Modifier.weight(1f)
                             )
                         }
@@ -159,7 +155,7 @@ fun PlaceDetailScreen(
                             Text(
                                 text = place.city_name,
                                 style = MaterialTheme.typography.bodyMedium,
-                                color = MaterialTheme.colorScheme.onSurfaceVariant
+                                color = Color.Black,
                             )
                         }
 
@@ -187,12 +183,14 @@ fun PlaceDetailScreen(
                         Text(
                             text = "About",
                             style = MaterialTheme.typography.titleLarge,
-                            fontWeight = FontWeight.SemiBold
+                            fontWeight = FontWeight.SemiBold,
+                            color = Color.Black,
+
                         )
                         Text(
                             text = place.description,
                             style = MaterialTheme.typography.bodyLarge,
-                            color = MaterialTheme.colorScheme.onSurfaceVariant,
+                            color = Color.Black,
                             lineHeight = MaterialTheme.typography.bodyLarge.lineHeight * 1.25
                         )
                     }
@@ -221,13 +219,15 @@ fun PlaceDetailScreen(
                                     Text(
                                         text = "Historical Significance",
                                         style = MaterialTheme.typography.titleMedium,
-                                        fontWeight = FontWeight.SemiBold
+                                        fontWeight = FontWeight.SemiBold,
+                                        color = Color.Black,
+
                                     )
                                 }
                                 Text(
                                     text = place.historical_significance,
                                     style = MaterialTheme.typography.bodyMedium,
-                                    color = MaterialTheme.colorScheme.onSurfaceVariant
+                                    color = Color.Black,
                                 )
                             }
                         }
@@ -248,7 +248,9 @@ fun PlaceDetailScreen(
 
                           is GetAllReviewState.Success->{
                               val reviews=reviewState.reviews
-                              Column {
+                              Column(
+                                  modifier=Modifier.background(Color.White)
+                              ){
 
                                   Text(
                                       text = "Reviews (${reviews.size})",
@@ -348,6 +350,17 @@ fun PlaceDetailScreen(
     }
 
 
+}
+
+@Preview
+@Composable
+fun PreviewPlaceDetail(){
+
+    PlaceDetailScreen(
+        mainNavController = rememberNavController(),
+        modifier= Modifier,
+        placeId = 0
+    )
 }
 
 // Reusable structural component for organized info key-value rows

@@ -361,7 +361,8 @@ fun CityCard(
         colors = CardDefaults.cardColors(containerColor = CardSurfaceLight),
         elevation = CardDefaults.cardElevation(defaultElevation = 0.dp), // Flat, minimalist look
         modifier = modifier
-            .width(110.dp) // Made smaller for a sleek, high-density homescreen look
+            .width(90.dp)
+            .height(80.dp)// Made smaller for a sleek, high-density homescreen look
             .aspectRatio(0.75f) // Elegant portrait ratio
             .clickable { onClick() }
     ) {

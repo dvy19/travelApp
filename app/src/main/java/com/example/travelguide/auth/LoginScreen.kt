@@ -83,7 +83,7 @@ fun LoginScreen(
             )
         )
         Text(
-            text = "Design your future. Log in to find your dream job.",
+            text = "Login to continue your journey",
             style = MaterialTheme.typography.bodyMedium,
             color = secondaryText
         )

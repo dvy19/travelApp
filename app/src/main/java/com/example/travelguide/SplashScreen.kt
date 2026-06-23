@@ -1,6 +1,7 @@
 package com.example.travelguide
 
 
+import android.util.Log
 import androidx.compose.animation.core.*
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
@@ -24,6 +25,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
+import com.google.firebase.messaging.FirebaseMessaging
 import kotlinx.coroutines.delay
 // Assuming CreamBackground is defined in your theme, or use Color(0xFFFDFBF7)
 val CreamBackground = Color(0xFFFDFBF7)
@@ -34,6 +36,21 @@ fun SplashScreen(rootNavController: NavController) {
 
     val context = LocalContext.current
     val sessionManager = remember { SessionManager(context) }
+
+    FirebaseMessaging.getInstance().token
+        .addOnCompleteListener { task ->
+
+            if (!task.isSuccessful) {
+                Log.d("FCM", "Token fetch failed")
+                return@addOnCompleteListener
+            }
+
+            val token = task.result
+
+            Log.d("FCM_TOKEN", token)
+
+            // TODO: Send token to Django API
+        }
 
     // 1. Session Routing Logic Execution
     LaunchedEffect(key1 = true) {

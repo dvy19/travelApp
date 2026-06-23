@@ -18,4 +18,9 @@ interface AuthInterface {
     ): Response<LoginResponse>
 
 
+    @POST("api/accounts/device-token/")
+    suspend fun postDeviceToken(
+        @Body request: DeviceTokenRequest
+    ) : Response<Unit>
+
 }

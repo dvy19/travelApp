@@ -79,7 +79,7 @@ fun SignupScreen(
             )
         )
         Text(
-            text = "Join thousands of professionals finding their next move.",
+            text = "Explore and Visit Places around you",
             style = MaterialTheme.typography.bodyMedium,
             color = Color(0xFF64748B)
         )
@@ -88,7 +88,7 @@ fun SignupScreen(
 
         // Role Selection (The "Why am I here?" section)
         Text(
-            text = "I am a...",
+            text = "Enter Your details",
             style = MaterialTheme.typography.labelLarge,
             color = primaryColor,
             modifier = Modifier.padding(bottom = 8.dp)

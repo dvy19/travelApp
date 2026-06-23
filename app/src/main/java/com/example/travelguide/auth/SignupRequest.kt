@@ -27,3 +27,8 @@ data class  LoginResponse(
     var message:String,
     var tokens:Token
 )
+
+
+data class DeviceTokenRequest(
+    var token:String
+)
