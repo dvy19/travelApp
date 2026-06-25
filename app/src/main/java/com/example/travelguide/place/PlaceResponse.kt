@@ -138,6 +138,28 @@ data class FamousPlace(
 
 
 
+data class UserReviewsResponse(
+    var message:String,
+    var data:List<ReviewData>
+)
+
+/*
+{
+    "message": "User reviews retrieved successfully",
+    "data": [
+        {
+            "id": 4,
+            "place": 4,
+            "user": 14,
+            "user_email": "user0298@gmail.com",
+            "rating": 4,
+            "content": "good place",
+            "created_at": "2026-06-25T13:22:27.121794Z"
+        }
+    ]
+}
+ */
+
 
 /*
  "annual_visitors_millions": 7.0,

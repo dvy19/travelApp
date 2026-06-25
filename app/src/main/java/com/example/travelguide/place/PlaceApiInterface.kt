@@ -9,6 +9,11 @@ import retrofit2.http.Path
 
 interface PlaceApiInterface{
 
+    @GET("/api/place/my-review/")
+    suspend fun getUserReview(
+        @Header("Authorization") token:String
+    ) : Response<UserReviewsResponse>
+
     @GET("/api/places")
     suspend fun getFamousPlaces(
     ): Response <List<FamousPlace>>

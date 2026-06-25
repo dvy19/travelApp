@@ -23,6 +23,14 @@ class PlaceRepository(
     }
 
 
+    suspend fun getUserReview() : Response<UserReviewsResponse>{
+        val token=sessionManager.getAuthToken()
+
+        return reviewApiService.getUserReview(
+            "Bearer $token"
+        )
+    }
+
     suspend fun getAllPlaces(): Response<PlaceResponse> {
 
         val token= sessionManager.getAuthToken()
