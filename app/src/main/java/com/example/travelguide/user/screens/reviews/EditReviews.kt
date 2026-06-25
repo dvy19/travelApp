@@ -27,8 +27,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.compose.rememberNavController
 import com.example.travelguide.place.GetSinglePlaceState
 import com.example.travelguide.place.SingleReviewState
 
@@ -44,7 +46,7 @@ private val TravelError = Color(0xFFBA1A1A)
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun EditReviewScreen(
+fun EditReviews(
     mainNavController: NavController,
     reviewId:Int?
 ){
@@ -344,4 +346,10 @@ fun PlaceCard(
             }
         }
     }
+}
+
+@Preview
+@Composable
+fun EditReviewsPreview() {
+    EditReviews(mainNavController = rememberNavController(), reviewId = 1)
 }

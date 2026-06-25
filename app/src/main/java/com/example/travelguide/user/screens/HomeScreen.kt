@@ -83,6 +83,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.compose.rememberNavController
 import com.example.travelguide.place.GetAllPlaceState
 import androidx.compose.ui.graphics.Brush
+import com.example.travelguide.Screens
+
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun HomeScreen(
@@ -156,7 +158,7 @@ fun HomeScreen(
                     selected = false,
                     onClick = {
 
-                        // mainNavController.navigate("personal_info")
+                        mainNavController.navigate(Screens.PersonalReviewScreen.route)
 
                     }
                 )

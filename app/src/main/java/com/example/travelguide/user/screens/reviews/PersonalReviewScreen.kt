@@ -87,16 +87,9 @@ fun PersonalReviewScreen(
         }
     ) { innerPadding ->
 
-        LazyColumn(
-            modifier = Modifier.fillMaxSize()
-                .padding(
-                    innerPadding
-                ),
-            verticalArrangement = Arrangement.spacedBy(16.dp)
-        ) {
 
             // Featured Cities Section
-            item {
+
 
                 when(val state=userReviewState){
 
@@ -114,10 +107,16 @@ fun PersonalReviewScreen(
                         val reviews=state.reviews
 
                         LazyColumn(
+                            modifier=Modifier.padding(innerPadding),
                             contentPadding = PaddingValues(horizontal = 16.dp)
                         ) {
                             items(reviews) {
-                                ReviewCard(it)
+                                ReviewCard(
+                                    it,
+                                    onClick = {
+                                        mainNavController.navigate("editReview/${it.id}")
+                                    }
+                                )
                             }
                         }
                     }
@@ -136,8 +135,5 @@ fun PersonalReviewScreen(
 
         }
 
-    }
 
-
-}
 

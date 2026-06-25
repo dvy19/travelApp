@@ -16,7 +16,7 @@ interface PlaceApiInterface{
         @Path("id") id: Int
     ) : Response<SingleReviewResponse>
 
-    @GET("/api/place/my-review/")
+    @GET("/api/place/my-reviews/")
     suspend fun getUserReview(
         @Header("Authorization") token:String
     ) : Response<UserReviewsResponse>

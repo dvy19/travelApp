@@ -37,6 +37,7 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
+import com.example.travelguide.Screens
 import com.example.travelguide.SessionManager
 import com.example.travelguide.place.FamousPlace
 import com.example.travelguide.place.GetFamousPlaceState
@@ -59,7 +60,9 @@ fun ExploreScreen(
 
         item {
             WorldFamousPlacesCard(
-                mainNavController= rememberNavController()
+                onClick = {
+                    mainNavController.navigate(Screens.FamousPlaceScreen.route)
+                }
             )
         }
 
@@ -68,7 +71,7 @@ fun ExploreScreen(
 @Composable
 fun WorldFamousPlacesCard(
     modifier: Modifier = Modifier,
-    mainNavController: NavController
+    onClick : () -> Unit,
 ) {
     Card(
         modifier = modifier.fillMaxWidth(),
@@ -98,8 +101,6 @@ fun WorldFamousPlacesCard(
 
             AssistChip(
                 onClick = {
-
-                    mainNavController.navigate("famousPlaces")
 
                 },
                 label = {

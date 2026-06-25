@@ -266,7 +266,10 @@ fun PlaceDetailScreen(
                                       contentPadding = PaddingValues(horizontal = 16.dp)
                                   ) {
                                       items(reviews) {
-                                          ReviewCard(it)
+                                          ReviewCard(
+                                              it,
+                                              onClick = {}
+                                          )
                                       }
                                   }
                               }
@@ -404,7 +407,8 @@ fun InfoRow(
 
 @Composable
 fun ReviewCard(
-    review: ReviewData
+    review: ReviewData,
+    onClick: () -> Unit = {}
 ) {
 
     Card(
