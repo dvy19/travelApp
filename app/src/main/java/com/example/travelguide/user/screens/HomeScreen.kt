@@ -138,136 +138,250 @@ fun HomeScreen(
 
 
 
+    ModalNavigationDrawer(
 
-    LazyColumn(
-        modifier = Modifier.fillMaxSize()
-            .padding(
-                24.dp
-            ),
-        verticalArrangement = Arrangement.spacedBy(16.dp)
+        drawerState = drawerState,
+
+        drawerContent = {
+
+            ModalDrawerSheet(
+                modifier = Modifier.width(240.dp),
+
+                ) {
+
+                NavigationDrawerItem(
+                    label = {
+                        Text("Reviews Added")
+                    },
+                    selected = false,
+                    onClick = {
+
+                        // mainNavController.navigate("personal_info")
+
+                    }
+                )
+
+                NavigationDrawerItem(
+                    label = {
+                        Text("Saved Places")
+                    },
+                    selected = false,
+                    onClick = {
+
+                        //mainNavController.navigate( "phone")
+
+                    }
+                )
+
+                NavigationDrawerItem(
+                    label = {
+                        Text("Log Out")
+                    },
+                    selected = false,
+                    onClick = {
+
+                        // mainNavController.navigate("delete_account")
+
+                    }
+                )
+
+                NavigationDrawerItem(
+                    label = {
+                        Text("Close")
+                    },
+                    selected = false,
+                    onClick = {
+
+                        scope.launch{
+                            drawerState.close()
+                        }
+
+                        // mainNavController.navigate("delete_account")
+
+                    }
+                )
+            }
+        }
     ) {
+        Scaffold(
+            topBar = {
+                TopAppBar(
+                    title = {
+                        Text("HomeScreen")
+                    },
+                    navigationIcon = {
+                        IconButton(
+                            onClick = {
+                                scope.launch {
 
-        // Featured Cities Section
-        item {
+                                    drawerState.open()
 
-        when (getCityState) {
-                    is GetAllCityState.Idle -> {
-
-                        Box(
-                            modifier = Modifier.fillMaxSize(),
-                            contentAlignment = Alignment.Center
+                                }
+                            }
                         ) {
-                            Text("Idle / Initializing...")
+                            Icon(
+                                Icons.Default.Menu,
+                                contentDescription = null
+                            )
+                        }
+                    },
+                    actions = {
+                        IconButton(
+                            onClick = {
+
+                            }
+                        ) {
+                            Icon(
+                                Icons.Default.Message,
+                                contentDescription = null
+                            )
                         }
                     }
+                )
+            },
+            floatingActionButton = {
+                FloatingActionButton(
+                    onClick = {}
+                ) {
+                    Icon(
+                        Icons.Default.Add,
+                        contentDescription = null
+                    )
+                }
+            }
+        ) { innerPadding ->
 
-                    is GetAllCityState.Loading -> {
-                        Box(
-                            modifier = Modifier.fillMaxSize(),
-                            contentAlignment = Alignment.Center
-                        ) {
-                            CircularProgressIndicator()
+            LazyColumn(
+                modifier = Modifier.fillMaxSize()
+                    .padding(
+                        innerPadding
+                    ),
+                verticalArrangement = Arrangement.spacedBy(16.dp)
+            ) {
+
+                // Featured Cities Section
+                item {
+
+                    when (getCityState) {
+                        is GetAllCityState.Idle -> {
+
+                            Box(
+                                modifier = Modifier.fillMaxSize(),
+                                contentAlignment = Alignment.Center
+                            ) {
+                                Text("Idle / Initializing...")
+                            }
+                        }
+
+                        is GetAllCityState.Loading -> {
+                            Box(
+                                modifier = Modifier.fillMaxSize(),
+                                contentAlignment = Alignment.Center
+                            ) {
+                                CircularProgressIndicator()
+                            }
+                        }
+
+                        is GetAllCityState.Success -> {
+
+                            val cities = (getCityState as GetAllCityState.Success).cities
+
+                            FeaturedCitiesSection(
+                                cities = cities,
+                                onCityClick = {
+                                    mainNavController.navigate("cityDetail/${it.id}")
+
+                                },
+                                modifier = Modifier.padding(horizontal = 24.dp)
+                            )
+                        }
+
+                        is GetAllCityState.Error -> {
+
+                            Text("Error")
                         }
                     }
-
-                    is GetAllCityState.Success -> {
-
-                        val cities = (getCityState as GetAllCityState.Success).cities
-
-                        FeaturedCitiesSection(
-                            cities = cities,
-                            onCityClick = {
-                                mainNavController.navigate("cityDetail/${it.id}")
-
-                            },
-                            modifier = Modifier.padding(horizontal = 24.dp)
-                        )
-                    }
-
-                    is GetAllCityState.Error -> {
-
-                        Text("Error")
-                    }
-        }
-        }
-
-
-
-        item {
-
-            CategoryFilterSection(
-                categories = categories,
-                selectedCategory = selectedCategory,
-                onCategorySelected = {
-                    selectedCategory = it
-                }
-            )
-
-        }
-
-
-        item {
-
-            Text(
-                text = "Popular Places",
-                style = MaterialTheme.typography.titleLarge,
-                modifier = Modifier.padding(horizontal = 16.dp)
-            )
-
-        }
-
-        when(getAllPlaceState){
-
-            is GetAllPlaceState.Idle->{
-                item {
-                    Text("Idle")
                 }
 
-            }
 
-            is GetAllPlaceState.Loading->{
 
                 item {
-                    Text("Loading")
-                }
-            }
 
-
-            is GetAllPlaceState.Success -> {
-
-                val places =
-                    (getAllPlaceState as GetAllPlaceState.Success).places
-
-                items(
-                    items = places,
-                    key = { it.id }
-                ) { place ->
-
-                    PlaceCardItem(
-                        place = place,
-                        onClick = {
-                            mainNavController.navigate("placeDetail/${place.id}")
-
+                    CategoryFilterSection(
+                        categories = categories,
+                        selectedCategory = selectedCategory,
+                        onCategorySelected = {
+                            selectedCategory = it
                         }
                     )
 
                 }
 
-            }
-
-            is GetAllPlaceState.Error -> {
 
                 item {
-                    Text("Failed to load places")
+
+                    Text(
+                        text = "Popular Places",
+                        style = MaterialTheme.typography.titleLarge,
+                        modifier = Modifier.padding(horizontal = 16.dp)
+                    )
+
                 }
 
+                when (getAllPlaceState) {
+
+                    is GetAllPlaceState.Idle -> {
+                        item {
+                            Text("Idle")
+                        }
+
+                    }
+
+                    is GetAllPlaceState.Loading -> {
+
+                        item {
+                            Text("Loading")
+                        }
+                    }
+
+
+                    is GetAllPlaceState.Success -> {
+
+                        val places =
+                            (getAllPlaceState as GetAllPlaceState.Success).places
+
+                        items(
+                            items = places,
+                            key = { it.id }
+                        ) { place ->
+
+                            PlaceCardItem(
+                                place = place,
+                                onClick = {
+                                    mainNavController.navigate("placeDetail/${place.id}")
+
+                                }
+                            )
+
+                        }
+
+                    }
+
+                    is GetAllPlaceState.Error -> {
+
+                        item {
+                            Text("Failed to load places")
+                        }
+
+                    }
+
+                    else -> {}
+
+                }
             }
-
-            else -> {}
-
         }
-    }
-        }
+
+    }}
 
 
 

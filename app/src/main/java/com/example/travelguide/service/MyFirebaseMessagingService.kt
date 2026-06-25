@@ -22,11 +22,6 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
 
             Log.d("FCM", "Title: ${it.title}")
             Log.d("FCM", "Body: ${it.body}")
-
-            showNotification(
-                title = it.title ?: "",
-                body = it.body ?: ""
-            )
         }
 
 
@@ -51,7 +46,7 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
             manager.createNotificationChannel(channel)
         }
     }
-
+/*
     private fun showNotification(
         title: String,
         body: String
@@ -76,6 +71,8 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
                 notification
             )
     }
+
+ */
 
     override fun onNewToken(token: String) {
         super.onNewToken(token)
