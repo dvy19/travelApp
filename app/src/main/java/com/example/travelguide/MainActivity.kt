@@ -48,4 +48,6 @@ sealed class Screens( var route:String){
 
     data object ExploreScreen:Screens("explore")
 
+    data object PersonalReviewScreen:Screens("personalReviews")
+
 }

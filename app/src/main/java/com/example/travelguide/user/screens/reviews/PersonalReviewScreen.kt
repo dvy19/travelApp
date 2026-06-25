@@ -1,15 +1,13 @@
-package com.example.travelguide.user.screens
+package com.example.travelguide.user.screens.reviews
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
-import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material.icons.filled.Message
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FloatingActionButton
@@ -30,7 +28,6 @@ import com.example.travelguide.place.PlaceRepository
 import com.example.travelguide.place.PlaceViewModel
 import com.example.travelguide.place.PlaceViewModelFactory
 import com.example.travelguide.place.ReviewCard
-import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -49,6 +46,10 @@ fun PersonalReviewScreen(
         factory = PlaceViewModelFactory(repo)
     )
 
+
+    LaunchedEffect(Unit) {
+        viewModel.get_user_reviews()
+    }
 
     val userReviewState by viewModel.userReviewState.collectAsState()
 

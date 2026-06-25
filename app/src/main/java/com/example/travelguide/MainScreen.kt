@@ -12,8 +12,6 @@ import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
-import com.example.travelguide.Screens.CityDetailScreen
-import com.example.travelguide.Screens.HomeScreen
 import com.example.travelguide.city.CityDetailScreen
 import com.example.travelguide.city.GetPlaceByCityScreen
 import com.example.travelguide.place.AddReviewScreen
@@ -21,6 +19,7 @@ import com.example.travelguide.place.PlaceDetailScreen
 import com.example.travelguide.user.screens.ExploreScreen
 import com.example.travelguide.user.screens.FamousPlacesScreen
 import com.example.travelguide.user.screens.HomeScreen
+import com.example.travelguide.user.screens.reviews.PersonalReviewScreen
 
 
 @Composable
@@ -93,6 +92,12 @@ fun MainScreen(rootNavController: NavController) {
 
             composable(Screens.FamousPlaceScreen.route){
                 FamousPlacesScreen(mainNavController)
+            }
+
+
+            composable(Screens.PersonalReviewScreen.route)
+            {
+                PersonalReviewScreen(mainNavController)
             }
 
 
