@@ -64,6 +64,7 @@ data class ReviewResponse(
     var message:String,
     var data:ReviewData
 )
+
 data class ReviewData(
 
     var id:Int,
@@ -142,6 +143,33 @@ data class UserReviewsResponse(
     var message:String,
     var data:List<ReviewData>
 )
+
+data class ReviewUpdateResponse(
+    var message:String,
+    var data:ReviewData
+)
+
+
+data class SingleReviewResponse(
+    var message:String,
+    var data: ReviewData
+)
+
+
+/*
+{
+    "message": "Review retrieved successfully",
+    "data": {
+        "id": 1,
+        "place": 4,
+        "user": 11,
+        "user_email": "user0909@gmail.com",
+        "rating": 4,
+        "content": "good place",
+        "created_at": "2026-06-17T09:44:58.543706Z"
+    }
+}
+ */
 
 /*
 {

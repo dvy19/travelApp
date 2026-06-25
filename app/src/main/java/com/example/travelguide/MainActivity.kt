@@ -50,4 +50,6 @@ sealed class Screens( var route:String){
 
     data object PersonalReviewScreen:Screens("personalReviews")
 
+    data object EditReviewScreen:Screens("editReview/{id}")
+
 }

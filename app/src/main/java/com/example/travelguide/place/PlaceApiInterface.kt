@@ -4,10 +4,17 @@ import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.GET
 import retrofit2.http.Header
+import retrofit2.http.PATCH
 import retrofit2.http.POST
 import retrofit2.http.Path
 
 interface PlaceApiInterface{
+
+    @GET("api/place/reviews/{id}/")
+    suspend fun getSingleReview(
+        @Header("Authorization") token:String,
+        @Path("id") id: Int
+    ) : Response<SingleReviewResponse>
 
     @GET("/api/place/my-review/")
     suspend fun getUserReview(
@@ -22,6 +29,12 @@ interface PlaceApiInterface{
     suspend fun getAllPlaces(
         @Header("Authorization") token:String
     ) : Response<PlaceResponse>
+
+    @PATCH("reviews/{id}/")
+    suspend fun updateReview(
+        @Path("id") id:Int,
+        @Body review: Map<String, Any>
+    ): Response<ReviewUpdateResponse>
 
     @GET("api/place/places/{id}/")
     suspend fun getSinglePlace(

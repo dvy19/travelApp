@@ -8,6 +8,14 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 
+
+sealed class SingleReviewState{
+    object Idle: SingleReviewState()
+    object Loading: SingleReviewState()
+    data class Success( val review: ReviewData) : SingleReviewState()
+    data class Error( val message:String) : SingleReviewState()
+}
+
 sealed class GetAllPlaceState{
 
     object Idle: GetAllPlaceState()
@@ -33,12 +41,17 @@ sealed class CreateReviewState{
 }
 
 sealed class GetAllReviewState{
-
     object Idle: GetAllReviewState()
     object Loading: GetAllReviewState()
     data class Success(val reviews: List<ReviewData>): GetAllReviewState()
     data class Error(val message: String): GetAllReviewState()
+}
 
+sealed class UpdateReviewState {
+    object Idle:UpdateReviewState()
+    object  Loading:UpdateReviewState()
+    data class Success( val review: ReviewUpdateResponse) : UpdateReviewState()
+    data class Error(val message:String): UpdateReviewState()
 }
 
 sealed class  GetFamousPlaceState{
@@ -48,20 +61,25 @@ sealed class  GetFamousPlaceState{
     data class Error(val message: String): GetFamousPlaceState()
 }
 
-
 sealed class GetUserReviewsState{
     object Idle: GetUserReviewsState()
     object Loading: GetUserReviewsState()
     data class Success(val reviews: List<ReviewData>): GetUserReviewsState()
     data class Error(val message: String): GetUserReviewsState()
 }
+
 class PlaceViewModel(
     private val repository: PlaceRepository
 ): ViewModel(){
 
+    private val _singleReviewState= MutableStateFlow<SingleReviewState>(SingleReviewState.Idle)
+    val singleReviewState: StateFlow<SingleReviewState> = _singleReviewState.asStateFlow()
+
+    private val _updateReviewState = MutableStateFlow<UpdateReviewState>(UpdateReviewState.Idle)
+    val updateReviewState: StateFlow<UpdateReviewState> = _updateReviewState.asStateFlow()
+
     private val _userReviewState = MutableStateFlow<GetUserReviewsState>(GetUserReviewsState.Idle)
     val userReviewState: StateFlow<GetUserReviewsState> = _userReviewState.asStateFlow()
-
 
     private val _getFamousPlaceState = MutableStateFlow<GetFamousPlaceState>(GetFamousPlaceState.Idle)
     val getFamousPlaceState: StateFlow<GetFamousPlaceState> = _getFamousPlaceState.asStateFlow()
@@ -72,13 +90,95 @@ class PlaceViewModel(
     private val _getSinglePlaceState = MutableStateFlow<GetSinglePlaceState>(GetSinglePlaceState.Idle)
     val getSinglePlaceState: StateFlow<GetSinglePlaceState> = _getSinglePlaceState.asStateFlow()
 
-
     private val _reviewState = MutableStateFlow<CreateReviewState>(CreateReviewState.Idle)
     val reviewState: StateFlow<CreateReviewState> = _reviewState.asStateFlow()
 
     private val _getAllReviewState = MutableStateFlow<GetAllReviewState>(GetAllReviewState.Idle)
     val getAllReviewState: StateFlow<GetAllReviewState> = _getAllReviewState.asStateFlow()
 
+
+    fun get_single_review(
+        id:Int
+    ) {
+
+        viewModelScope.launch{
+
+            _singleReviewState.value= SingleReviewState.Idle
+
+            try{
+
+                val response=repository.fetchSingleReview(id)
+
+                if( response.isSuccessful){
+
+                    _singleReviewState.value= SingleReviewState.Success(
+                        response.body()!!.data
+                    )
+                }
+                else{
+                    _singleReviewState.value= SingleReviewState.Error(
+                        "failed"
+                    )
+
+                }
+            }
+            catch(e: Exception) {
+                _singleReviewState.value = SingleReviewState.Error(
+                    e.message ?: "Unknown Error"
+                )
+            }
+        }
+
+    }
+
+
+    fun updateReview(
+        reviewId:Int,
+        rating:Int,
+        content:String
+    ){
+
+        viewModelScope.launch{
+
+            _updateReviewState.value= UpdateReviewState.Loading
+
+            try{
+
+                val response=repository.editReview(
+                    reviewId,
+                    rating,
+                    content
+                )
+
+                if (response.isSuccessful &&
+                    response.body() != null
+                ) {
+
+                    _updateReviewState.value =
+                        UpdateReviewState.Success(
+                            response.body()!!
+                        )
+
+                }
+                else{
+                    _updateReviewState.value= UpdateReviewState.Error(
+                        "failed"
+                    )
+
+                }
+                }
+            catch(e: Exception) {
+                _updateReviewState.value= UpdateReviewState.Error(
+                    e.message?: "Unknown Error"
+                )
+
+
+            }
+
+
+
+        }
+    }
 
     fun get_user_reviews(){
 

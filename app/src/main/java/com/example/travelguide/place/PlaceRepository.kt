@@ -10,11 +10,18 @@ class PlaceRepository(
 ) {
 
     private val apiService= TravelApiClient.getAllPlaceApi
-
     private val reviewApiService= TravelApiClient.createReviewApi
-
-
     private val famousPlaceApiService= TravelApiClient.famousPlaceApi
+
+    suspend fun fetchSingleReview(id:Int) : Response<SingleReviewResponse>{
+
+        val token=sessionManager.getAuthToken()
+
+        return reviewApiService.getSingleReview(
+            "Bearer $token",
+            id
+        )
+    }
 
     suspend fun getFamousPlaces() : Response<List<FamousPlace>>{
 
@@ -70,6 +77,22 @@ class PlaceRepository(
         )
     }
 
+    suspend fun editReview(
+        id:Int,
+        rating:Int,
+        content: String
+    ): Response<ReviewUpdateResponse> {
+
+        val body = mapOf(
+            "rating" to rating,
+            "content" to content
+        )
+
+        return reviewApiService.updateReview(id, body)
+    }
 
 }
+
+
+
 

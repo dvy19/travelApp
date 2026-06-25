@@ -19,6 +19,7 @@ import com.example.travelguide.place.PlaceDetailScreen
 import com.example.travelguide.user.screens.ExploreScreen
 import com.example.travelguide.user.screens.FamousPlacesScreen
 import com.example.travelguide.user.screens.HomeScreen
+import com.example.travelguide.user.screens.reviews.EditReviewScreen
 import com.example.travelguide.user.screens.reviews.PersonalReviewScreen
 
 
@@ -99,6 +100,24 @@ fun MainScreen(rootNavController: NavController) {
             {
                 PersonalReviewScreen(mainNavController)
             }
+
+            composable(
+                route = Screens.EditReviewScreen.route,
+                arguments = listOf(
+                    navArgument("id") {
+                        type = NavType.IntType
+                    }
+                )
+            ) { backStackEntry ->
+
+                val id = backStackEntry.arguments?.getInt("id")
+
+                EditReviewScreen(
+                    mainNavController = mainNavController,
+                    reviewId = id,
+                )
+            }
+
 
 
 
