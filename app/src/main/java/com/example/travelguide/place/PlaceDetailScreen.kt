@@ -418,7 +418,7 @@ fun ReviewCard(
 ) {
     Card(
         modifier = Modifier
-            .width(280.dp)
+            .fillMaxWidth()
             .wrapContentHeight()
             .clickable(onClick = onClick),
         shape = RoundedCornerShape(16.dp),

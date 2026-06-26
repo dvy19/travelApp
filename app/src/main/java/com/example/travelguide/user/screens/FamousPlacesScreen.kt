@@ -62,7 +62,7 @@ fun FamousPlacesScreen(
     }
 
     LaunchedEffect(Unit) {
-        viewModel.fetchAllPlaces()
+        viewModel.fetchFamousPlaces()
     }
 
     val getFamousPlaceState by viewModel.getFamousPlaceState.collectAsState()
