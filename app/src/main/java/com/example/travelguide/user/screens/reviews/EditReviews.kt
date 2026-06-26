@@ -33,16 +33,16 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.compose.rememberNavController
 import com.example.travelguide.place.GetSinglePlaceState
 import com.example.travelguide.place.SingleReviewState
+import com.example.travelguide.place.UpdateReviewState
 
 
-private val TravelBackground = Color(0xFFFBFBFB)
-private val TravelPrimary = Color(0xFFE05A47) // Sunset Terracotta
-private val TravelTextPrimary = Color(0xFF1A1A1A) // Deep Black/Charcoal
-private val TravelTextSecondary = Color(0xFF666666)
-private val TravelSurface = Color(0xFFF3F3F3)
-private val TravelRatingGold = Color(0xFFFFB300)
-private val TravelError = Color(0xFFBA1A1A)
-
+val TravelBackground = Color(0xFFFBFBFB)
+ val TravelPrimary = Color(0xFFE05A47) // Sunset Terracotta
+ val TravelTextPrimary = Color(0xFF1A1A1A) // Deep Black/Charcoal
+ val TravelTextSecondary = Color(0xFF666666)
+ val TravelSurface = Color(0xFFF3F3F3)
+ val TravelRatingGold = Color(0xFFFFB300)
+val TravelError = Color(0xFFBA1A1A)
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -68,10 +68,11 @@ fun EditReviews(
         }
     }
 
+    var showSuccessDialog by remember { mutableStateOf(false) }
+
     val singleReviewState by viewModel.singleReviewState.collectAsState()
 
-    val userReviewState by viewModel.userReviewState.collectAsState()
-
+    val updateReviewState by viewModel.updateReviewState.collectAsState()
     val singlePlaceState by viewModel.getSinglePlaceState.collectAsState()
 
     // Mutable states for editing
@@ -271,8 +272,33 @@ fun EditReviews(
                     // --- Save Changes Button ---
                     Button(
                         onClick = {
-                            val finalRating = ratingInput.toDoubleOrNull() ?: 0.0
-                            //onSaveClick(finalRating, reviewContent)
+                            val finalRating = ratingInput.toIntOrNull() ?: 0
+
+                            viewModel.updateReview(reviewId?:0, finalRating,reviewContent )
+
+                            when(val state=updateReviewState){
+
+                                is UpdateReviewState.Idle->{
+
+                                }
+
+                                is UpdateReviewState.Loading->{
+
+                                }
+
+                                is UpdateReviewState.Success->{
+
+                                    showSuccessDialog=true
+
+                                }
+
+                                is UpdateReviewState.Error->{
+
+                                }
+
+
+
+                            }
                         },
                         modifier = Modifier
                             .fillMaxWidth()
@@ -295,6 +321,18 @@ fun EditReviews(
         is SingleReviewState.Error->{
 
         }
+
+
+    }
+
+    if (showSuccessDialog) {
+        SuccessDialog(
+            onDismiss = {
+                showSuccessDialog = false
+                // Optional: navigate back to the previous screen here
+                //onBackClick()
+            }
+        )
     }
 
 
@@ -345,7 +383,47 @@ fun PlaceCard(
                 }
             }
         }
+
+
     }
+
+
+}
+
+
+
+@Composable
+fun SuccessDialog(onDismiss: () -> Unit) {
+    AlertDialog(
+        onDismissRequest = onDismiss,
+        containerColor = TravelSurface,
+        shape = RoundedCornerShape(16.dp),
+        title = {
+            Text(
+                text = "Success!",
+                color = TravelTextPrimary,
+                fontSize = 20.sp,
+                fontWeight = FontWeight.Bold
+            )
+        },
+        text = {
+            Text(
+                text = "Review edited successfully.",
+                color = TravelTextSecondary,
+                fontSize = 15.sp
+            )
+        },
+        confirmButton = {
+            TextButton(onClick = onDismiss) {
+                Text(
+                    text = "OK",
+                    color = TravelPrimary,
+                    fontWeight = FontWeight.Bold,
+                    fontSize = 16.sp
+                )
+            }
+        }
+    )
 }
 
 @Preview

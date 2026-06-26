@@ -2,6 +2,7 @@ package com.example.travelguide.place
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -12,6 +13,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.lazy.LazyRow
@@ -53,12 +55,17 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import coil.compose.AsyncImage
 import com.example.travelguide.SessionManager
 import com.example.travelguide.user.screens.CategoryCard
+import com.example.travelguide.user.screens.reviews.TravelRatingGold
+import com.example.travelguide.user.screens.reviews.TravelSurface
+import com.example.travelguide.user.screens.reviews.TravelTextPrimary
+import com.example.travelguide.user.screens.reviews.TravelTextSecondary
 
 
 @Composable
@@ -404,67 +411,95 @@ fun InfoRow(
 }
 
 
-
 @Composable
 fun ReviewCard(
     review: ReviewData,
     onClick: () -> Unit = {}
 ) {
-
     Card(
         modifier = Modifier
             .width(280.dp)
-            .wrapContentHeight(),
+            .wrapContentHeight()
+            .clickable(onClick = onClick),
         shape = RoundedCornerShape(16.dp),
-        elevation = CardDefaults.cardElevation(
-            defaultElevation = 4.dp
-        )
+        // Modern UI relies heavily on clean borders or soft, crisp shadows instead of muddy elevations
+        colors = CardDefaults.cardColors(containerColor = TravelSurface),
+        elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
     ) {
-
         Column(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(16.dp),
-            verticalArrangement = Arrangement.spacedBy(8.dp)
+                .padding(18.dp),
+            verticalArrangement = Arrangement.spacedBy(12.dp)
         ) {
-
-            Text(
-                text = review.user_email,
-                style = MaterialTheme.typography.titleSmall,
-                fontWeight = FontWeight.Bold
-            )
-
+            // --- Header: User Identity & Rating ---
             Row(
-                verticalAlignment = Alignment.CenterVertically
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.Top
             ) {
-
-                repeat(review.rating) {
-
-                    Icon(
-                        imageVector = Icons.Default.Star,
-                        contentDescription = null,
-                        tint = Color(0xFFFFC107)
+                Column(modifier = Modifier.weight(1f).padding(end = 8.dp)) {
+                    Text(
+                        text = review.user_email,
+                        style = MaterialTheme.typography.titleMedium.copy(
+                            fontSize = 15.sp,
+                            fontWeight = FontWeight.Bold,
+                            color = TravelTextPrimary
+                        ),
+                        maxLines = 1,
+                        overflow = TextOverflow.Ellipsis
                     )
-
+                    Text(
+                        text = "Verified Explorer",
+                        style = MaterialTheme.typography.bodySmall,
+                        color = TravelTextSecondary
+                    )
                 }
 
-                Spacer(modifier = Modifier.width(8.dp))
-
-                Text(
-                    text = "${review.rating}/5",
-                    style = MaterialTheme.typography.bodyMedium
-                )
-
+                // Modern Asymmetric Rating Badge (Clean out-of-10 display)
+                Row(
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.spacedBy(4.dp)
+                ) {
+                    Icon(
+                        imageVector = Icons.Default.Star,
+                        contentDescription = "Rating",
+                        tint = TravelRatingGold,
+                        modifier = Modifier.size(18.dp)
+                    )
+                    Text(
+                        text = review.rating.toString(),
+                        style = MaterialTheme.typography.bodyMedium.copy(
+                            fontWeight = FontWeight.Bold,
+                            color = TravelTextPrimary
+                        )
+                    )
+                    Text(
+                        text = "/10",
+                        style = MaterialTheme.typography.bodySmall,
+                        color = TravelTextSecondary
+                    )
+                }
             }
 
+            // --- Divider line to break up space crisply ---
+            Box(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(1.dp)
+
+            )
+
+            // --- Body: Review Content ---
             Text(
                 text = review.content,
-                style = MaterialTheme.typography.bodyMedium,
+                style = MaterialTheme.typography.bodyMedium.copy(
+                    lineHeight = 20.sp, // Slightly looser line height for better travel blog readability
+                    color = TravelTextPrimary
+                ),
                 maxLines = 4,
                 overflow = TextOverflow.Ellipsis
             )
-
         }
-
     }
 }
