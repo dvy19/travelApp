@@ -21,7 +21,7 @@ interface PlaceApiInterface{
         @Header("Authorization") token:String
     ) : Response<UserReviewsResponse>
 
-    @GET("/api/places")
+    @GET("api/places")
     suspend fun getFamousPlaces(
     ): Response <List<FamousPlace>>
 

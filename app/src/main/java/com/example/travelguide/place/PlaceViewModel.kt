@@ -231,19 +231,12 @@ class PlaceViewModel(
                 }
             } catch (e: Exception) {
 
-                val response = repository.getFamousPlaces()
-
-
-                Log.d("POST_API", "Code = ${response.code()}")
-                Log.d("POST_API", "Successful = ${response.isSuccessful}")
-                Log.d("POST_API", "Body = ${response.body()}")
-                Log.d("POST_API", "ErrorBody = ${response.errorBody()?.string()}")
-
-                Log.d("POST_API", "After API call")
 
                 _getFamousPlaceState.value = GetFamousPlaceState.Error(
                     e.message ?: "Unknown Error"
                 )
+
+                Log.d("m" , e.message.toString())
             }
         }
 
